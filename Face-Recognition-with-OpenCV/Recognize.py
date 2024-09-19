@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 import cv2 as cv
+import subprocess
 
 id_names = pd.read_csv('id-names.csv')
 id_names = id_names[['id', 'name']]
+motorCode = ['python3', '/home/acm/Door.Ai/Face-Recognition-with-OpenCV/1testServo.py']
 
 faceClassifier = cv.CascadeClassifier('/home/acm/Door.Ai/Face-Recognition-with-OpenCV/Classifiers/haarface.xml')
 
@@ -24,7 +26,7 @@ while cv.waitKey(1) & 0xFF != ord('q'):
         faceRegion = cv.resize(faceRegion, (220, 220))
 
         label, trust = lbph.predict(faceRegion)
-        if trust < 50:  # Establish a confidence level to recognize the user
+        if trust < 60:  # Establish a confidence level to recognize the user
             print(trust)
             try:
                 name = id_names[id_names['id'] == label]['name'].item()
@@ -33,10 +35,12 @@ while cv.waitKey(1) & 0xFF != ord('q'):
                 count += 1
                 print(count)
                 print(name)
-                if count  == 35:
+                if count  == 20:
+                    subprocess.run(motorCode)
                     print("Opening Door")
                     camera.release()
                     cv.destroyAllWindows()
+                    #subprocess.run('python3',motorCode)
 
             except:
                 pass

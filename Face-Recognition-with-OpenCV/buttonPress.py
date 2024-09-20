@@ -1,26 +1,29 @@
+'''
+Author & Contributer: Carlos Lopez Jr
+
+'''
+
 import subprocess
 import time
 
-
-
-
-python_file = ['python3', '/home/acm/Door.Ai/Face-Recognition-with-OpenCV/Recognize.py']
+python_file = ['python3', '/home/acm/Door.Ai/Face-Recognition-with-OpenCV/Recognize.py'] # change to correct location
 def execute_bluetoothctl():
     try:
         while True:
+            
             # Start bluetoothctl command with sudo
             bluetoothctl_process = subprocess.Popen(['sudo', 'bluetoothctl'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            
             # Send the command to connect to the Bluetooth device
             bluetoothctl_process.stdin.write("connect 80:E4:DA:7C:B3:E4\n")
             bluetoothctl_process.stdin.flush()
+            
             # Read the output until the desired string is found
-
-
-            # if already connected -> disconnect the button 
-        
             while True:
                 output = bluetoothctl_process.stdout.readline().strip()
-                print(output)  # Print all output for debugging
+                # print(output)  # Print all output for debugging
+
+                # if already connected -> disconnect the button 
                 if "Connected: yes" in output:
                     print("-----------------------------\n\n\n")
 
